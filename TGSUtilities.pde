@@ -17,6 +17,14 @@ class TGSSettings {
      TGSColor newsetting = ColorSequence.get(index);
      //stroke(newsetting.red, newsetting.green, newsetting.blue);
      stroke(newsetting.rgbhex, newsetting.alpha);
+     //stroke(newsetting.rgbhex, 0);
+  }
+  
+  void set3dcolor(int index) {
+     TGSColor newsetting = ColorSequence.get(index);
+     //stroke(newsetting.red, newsetting.green, newsetting.blue);
+     noStroke();
+     fill(newsetting.rgbhex,15);
   }
   
    void OnlyTriangles() {
@@ -87,7 +95,6 @@ class TGSSettings {
        SetColorIndex(1, ColorFactory.getViolet());
        SetColorIndex(2, ColorFactory.getViolet());
        SetColorIndex(0, ColorFactory.getViolet());
-       
    }
    
    void SharedForm(int i) {
@@ -199,7 +206,7 @@ class TGSColor {
   
   TGSColor(int inrgbhex) {
     rgbhex = inrgbhex;
-    alpha = 100;
+    alpha = 255;
     //alpha = 15;
   }
   

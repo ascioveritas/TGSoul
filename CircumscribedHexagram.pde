@@ -5,19 +5,37 @@ class TGSCircumHexagram {
   float x, y, z;
   float radius;
   TGSSettings CurrentSettings;
-  
+  float xyrotation;
+  float zrotation;
+
+  TGSCircumHexagram(int inx, int iny, int inradius, float inxyrotation, float inzrotation) {
+    zrotation = inzrotation;
+    xyrotation = inxyrotation;
+    VariableSetup(inx, iny, inradius);
+  }
+
+  TGSCircumHexagram(int inx, int iny, int inradius, float inxyrotation) {
+    xyrotation = inxyrotation;
+    VariableSetup(inx, iny, inradius);
+  }
   
   TGSCircumHexagram(int inx, int iny, int inradius) {
+    xyrotation = 0;
+    VariableSetup(inx, iny, inradius); 
+  }
+  
+  void VariableSetup(int inx, int iny, int inradius) { 
    x = inx;
    y = iny;
    z = 0;
    radius = inradius;
+   
    CurrentSettings = new TGSSettings();
    //CurrentSettings.OnlyTriangles();
    //CurrentSettings.OnlyCircles();
    //CurrentSettings.SpiritForm();
    //CurrentSettings.PhysicalForm();
-   CurrentSettings.HeartCenterMap();
+   //CurrentSettings.HeartCenterMap();
    
   }
   
@@ -36,8 +54,8 @@ void UpdateColorDepth(int depth, int numcalls) {
   
   
   void UpdateDepthSettings(int depth, int numcalls) {
-    UpdateVisibilityDepth(depth, numcalls);
-    UpdateColorDepth(depth, numcalls);
+    //UpdateVisibilityDepth(depth, numcalls);
+    //UpdateColorDepth(depth, numcalls);
   }
   
   
@@ -83,7 +101,6 @@ void UpdateColorDepth(int depth, int numcalls) {
   
   void DrawSpheroid() {
     if(Enable3dSpheres) {
-        
         sphere(radius);
       } else {
         ellipse(0,0, radius, radius);  
@@ -99,10 +116,10 @@ void UpdateColorDepth(int depth, int numcalls) {
       pushMatrix();
       rotate(tpi);
       translate(0, radius/2);
-      
+      pushStyle();
       SphereColorSettings(colorIndex);   
       DrawSpheroid();
-      
+      popStyle();
       popMatrix();
       colorIndex++;
     }
@@ -111,12 +128,14 @@ void UpdateColorDepth(int depth, int numcalls) {
   }
   
   void displaysteps() {
+
     noFill();
     stroke(100);
     DrawCenterCircle();
     DrawInscribedTriangles();
     DrawOuterCircles();    
   }
+ 
 
   void recursivedisplay(float inradius, int depth, int numcalls) {
     radius = inradius;
@@ -129,8 +148,14 @@ void UpdateColorDepth(int depth, int numcalls) {
 
   // Custom method for drawing the object
   void display() {
+    pushMatrix();
+    rotateZ(xyrotation);
+    rotateX(zrotation);
+    //rotateY(zrotation);
     float tempRadius = radius;
     recursivedisplay(tempRadius , defaultDepth, 1);
     radius = tempRadius;
+    
+    popMatrix();
   }
 }
